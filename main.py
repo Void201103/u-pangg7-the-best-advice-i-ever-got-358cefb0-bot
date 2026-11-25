@@ -20,6 +20,10 @@ ENTRY = (
 
 
 def main():
+    # The gate refuses anything but one sentence of 1-200 characters,
+    # so fail loudly here instead of shipping a bad file.
+    if len(ENTRY) > 200 or ENTRY.count(".") != 1 or not ENTRY.strip():
+        raise ValueError("entry must be one sentence of at most 200 characters")
     out = os.environ.get("MAKEFUN_OUTPUT_DIR", "/output")
     os.makedirs(out, exist_ok=True)
     with open(os.path.join(out, "entry.txt"), "w", encoding="utf-8") as f:
